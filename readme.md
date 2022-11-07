@@ -2,7 +2,7 @@
 
 RESTful API to support the Movie App with Express, Concurrently + Nodemon and PostgreSQL integration
 
-## Quickstart
+## Local Quickstart
 ```sh
 # install packages
 npm install

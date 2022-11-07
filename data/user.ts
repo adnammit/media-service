@@ -3,6 +3,9 @@ import pool from './pool'
 export class User {
 
 	public getUsers = (request: any, response: any, next: any) => {
+
+
+		// apparently pool.query is bad...? rewrite
 		pool.query('SELECT * FROM public.user',)
 			.then((results) => {
 				response.status(200).json(results.rows)
