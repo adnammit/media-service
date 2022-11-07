@@ -8,8 +8,8 @@ const pool = new Pool({
 	host: process.env.DB_HOST,
 	database: process.env.DB_DATABASE,
 	password: process.env.DB_PASSWORD,
-	port: Number(process.env.DB_PORT)
-	// sslmode: process.env.NODE_ENV === "production" ? "require" : "disable" // need this?
+	port: Number(process.env.DB_PORT),
+	ssl: process.env.NODE_ENV === "production" // need this?
 })
 
 pool.on('error', (err, client) => {
