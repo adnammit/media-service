@@ -6,12 +6,17 @@ const router = express.Router()
 router
 	.route('/')
 	.get(User.getUsers)
-	// .post(User.addUser)
+	.put(User.addUser)
 
-// router
-// 	.route('/:id')
-// 	.get(User.getUserByUserId)
-// // .post(User.updateUser) // maybe idk
+router
+	.route('/:username')
+	.get(User.getUserByUsername)
+// .post(User.updateUser) // maybe idk
+
+router
+	.route('/:id')
+	.get(User.getUserById)
+// .post(User.updateUser) // maybe idk
 
 // router
 // 	.route('/:id/movies')

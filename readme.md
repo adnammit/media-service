@@ -18,11 +18,14 @@ npm run build
 ## Notes
 * dev hot-loading: Concurrently package is used to simultaneously watch and compile files on change and restart the server
 * [dotenv package](https://medium.com/@thejasonfile/using-dotenv-package-to-create-environment-variables-33da4ac4ea8f) is required for node apps to read `.env` variables
+* REST arch:
+	- [Name Your Endpoints](https://restfulapi.net/resource-naming/)
+	- [HTTP Response Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/100)
+* [setting up diagnostics for database execution](https://node-postgres.com/guides/project-structure)
 
 ## To-do
-* figure out how to deploy to Render
 * absolute paths in express is different...
-* add exception handling
+* add exception handling and return meaningful json errors
 * wire up each proc to and endpoint and test
 * add auth
 * write a postman collection
