@@ -13,7 +13,7 @@ npm run dev
 # build for production -> /dist
 npm run build
 ```
-* [then try it out!](http://localhost:5555/api/v1/user)
+* [then try it out!](http://localhost:5555/api/v1/users)
 
 ## Notes
 * dev hot-loading: Concurrently package is used to simultaneously watch and compile files on change and restart the server
@@ -22,6 +22,8 @@ npm run build
 	- [Name Your Endpoints](https://restfulapi.net/resource-naming/)
 	- [HTTP Response Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/100)
 * [setting up diagnostics for database execution](https://node-postgres.com/guides/project-structure)
+* [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
+
 
 ## To-do
 * absolute paths in express is different...
@@ -29,9 +31,5 @@ npm run build
 * wire up each proc to and endpoint and test
 * add auth
 * write a postman collection
-* check stuff out:
-	- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-	- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
-	- [Remember how psql do](https://www.tutorialspoint.com/postgresql/postgresql_insert_query.htm)
 
 

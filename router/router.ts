@@ -14,7 +14,7 @@ router
 // .post(User.updateUser) // maybe idk
 
 router
-	.route('/:id')
+	.route('/:id(\d+)')
 	.get(User.getUserById)
 // .post(User.updateUser) // maybe idk
 
