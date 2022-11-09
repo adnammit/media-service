@@ -1,34 +1,52 @@
-import { QueryResult, ResponseCode } from '../models/response'
+import { Request, Response, NextFunction } from 'express'
+import { TypedRequestQuery } from '../models/requestTypes'
+import { QueryResult, ResponseCode } from '../models/queryResult'
 import { query } from './pool'
 
 export class User {
 
-	public getUsers = async (req: any, res: any, next: any) => {
-		const sql = 'SELECT * FROM public.user'
+	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string }>, res: Response, next: NextFunction) => {
 
-		await query(sql)
-			.then((results) => {
-				const result = new QueryResult({ code: ResponseCode.OK, result: results.rows })
-				res.status(result.code).json(result.toResponseObj())
-			})
-			.catch((err) => {
-				next(err)
-			})
+		const id = req.query.id
+		const username = req.query.username
+		let result: QueryResult
+
+		if (!!id) {
+
+			result = await this.getUser('_userid', id)
+			res.status(result.code).json(result.toResponseObj())
+
+		} else if (!!username) {
+
+			result = await this.getUser('_username', username)
+			res.status(result.code).json(result.toResponseObj())
+
+		} else {
+
+			const sql = 'SELECT * FROM public.user'
+
+			result = await query(sql)
+				.then((results) => {
+					return new QueryResult({ code: ResponseCode.OK, result: results.rows })
+				})
+		}
+
+		res.status(result.code).json(result.toResponseObj())
 	}
 
-	public getUserById = async (req: any, res: any, next: any) => {
-		const { id } = req.params
+	public getUserById = async (req: TypedRequestQuery<{ id: string }>, res: Response, next: NextFunction) => {
+		const id = req.query.id
 		const result = await this.getUser('_userid', id)
 		res.status(result.code).json(result.toResponseObj())
 	}
 
-	public getUserByUsername = async (req: any, res: any, next: any) => {
-		const { username } = req.params
+	public getUserByUsername = async (req: TypedRequestQuery<{ username: string }>, res: Response, next: NextFunction) => {
+		const username = req.query.username
 		const result = await this.getUser('_username', username)
 		res.status(result.code).json(result.toResponseObj())
 	}
 
-	public addUser = async (req: any, res: any, next: any) => {
+	public addUser = async (req: Request, res: Response, next: NextFunction) => {
 		const { username, email, firstname, lastname } = req.body
 		const sql = `
 			select public.addUser(

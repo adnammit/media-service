@@ -23,7 +23,8 @@ npm run build
 	- [HTTP Response Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/100)
 * [setting up diagnostics for database execution](https://node-postgres.com/guides/project-structure)
 * [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-
+* [Typed requests](https://javascript.plainenglish.io/typed-express-request-and-response-with-typescript-7277aea028c)
+* having to return `next(err)` for every route was a PITA, so i upgraded to beta Express5 which includes middleware that automatically calls `next` when errors are thrown -- [more info](https://expressjs.com/en/guide/error-handling.html)
 
 ## To-do
 * absolute paths in express is different...
@@ -31,5 +32,7 @@ npm run build
 * wire up each proc to and endpoint and test
 * add auth
 * write a postman collection
-
+* check out [express middlewares](https://blog.bitsrc.io/5-express-middleware-libraries-every-developer-should-know-94e2728f7503)
+* upgrade to Express5 from beta when that comes out
+* check [this](https://javascript.plainenglish.io/how-to-automatically-convert-typescript-types-to-runtime-validators-5b06ee269b13) out
 

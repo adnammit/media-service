@@ -23,7 +23,7 @@ export const query = async (text: string, params: any[] | undefined = undefined)
 	const start = Date.now()
 	const res = await pool.query(text, params)
 	const duration = Date.now() - start
-	console.log('query execution time ', { text, duration, rows: res.rowCount })
+	console.log('query execution time ', { text, params, duration, rows: res.rowCount })
 	return res
 }
 

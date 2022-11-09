@@ -8,15 +8,15 @@ router
 	.get(User.getUsers)
 	.put(User.addUser)
 
-router
-	.route('/:username')
-	.get(User.getUserByUsername)
-// .post(User.updateUser) // maybe idk
+// router
+// 	.route('/:username')
+// 	.get(User.getUserByUsername)
+// // .post(User.updateUser) // maybe idk
 
-router
-	.route('/:id(\d+)')
-	.get(User.getUserById)
-// .post(User.updateUser) // maybe idk
+// router
+// 	.route('/:id(\d+)')
+// 	.get(User.getUserById)
+// // .post(User.updateUser) // maybe idk
 
 // router
 // 	.route('/:id/movies')

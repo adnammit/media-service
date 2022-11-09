@@ -7,18 +7,18 @@
 // 	InvalidRequest,
 // }
 
-interface IQueryResultParams {
+type QueryResultParams = {
 	code: ResponseCode,
 	error?: string,
 	result?: any
 }
 
-interface IResponseObj {
+type ResponseObj = {
 	error?: string,
 	data?: any
 }
 
-export enum ResponseCode {
+enum ResponseCode {
 	OK = 200,
 	Created = 201,
 	Error = 500,
@@ -27,7 +27,7 @@ export enum ResponseCode {
 	BadRequest = 400,
 }
 
-export class QueryResult {
+class QueryResult {
 	code: ResponseCode
 	error?: string
 	result?: object
@@ -37,7 +37,7 @@ export class QueryResult {
 	// }
 
 	// standardize what is actually exposed to the client
-	toResponseObj(): IResponseObj {
+	toResponseObj(): ResponseObj {
 		return {
 			error: this.error,
 			data: this.result
@@ -52,9 +52,11 @@ export class QueryResult {
 	// 	[QueryStatus.Exists, ResponseCode.Conflict],
 	// ])
 
-	constructor(params: IQueryResultParams) {
+	constructor(params: QueryResultParams) {
 		this.code = params.code
 		this.error = params.error
 		this.result = params.result
 	}
 }
+
+export { QueryResult, ResponseCode }
