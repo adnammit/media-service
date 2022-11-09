@@ -1,23 +1,25 @@
-// // log to stderr
-// const log = (err, req, res, next) => {
-// 	console.error(err.stack)
-// 	next(err)
-// }
+import { Request, Response, NextFunction } from 'express'
 
-// // for xhr
-// const clientHandle = (err, req, res, next) => {
-// 	if (req.xhr) {
-// 		res.status(500).send({ error: err })
-// 	} else {
-// 		next(err)
-// 	}
-// }
+// log
+const log = (err: any, req: Request, res: Response, next: NextFunction) => {
+	console.error(err?.stack)
+	next(err)
+}
 
-// // default
-// const handle = (err, req, res, next) => {
-// 	// if you create an error page, you can render it here instead
-// 	res.status(500)
-// 	res.json({ error: err.stack })
-// }
+// xhr
+const clientHandle = (err: any, req: Request, res: Response, next: NextFunction) => {
+	if (req.xhr) {
+		res.status(500).send({ error: err })
+	} else {
+		next(err)
+	}
+}
 
-// export { log, clientHandle, handle }
+// default
+const handle = (err: any, req: Request, res: Response, next: NextFunction) => {
+	// if you create an error page, you can render it here instead
+	res.status(500)
+	res.json({ error: err.stack })
+}
+
+export { log, clientHandle, handle }

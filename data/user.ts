@@ -70,10 +70,6 @@ export class User {
 					const result = new QueryResult({ code: ResponseCode.Created, result: { userid: userid } })
 					res.status(result.code).json(result.toResponseObj())
 				})
-				.catch((err) => {
-					console.error(err)
-					next(err)
-				})
 		}
 	}
 
@@ -85,10 +81,6 @@ export class User {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
 				const user = code == ResponseCode.OK ? results.rows[0] : null
 				return new QueryResult({ code: code, result: user })
-			})
-			.catch((err) => {
-				console.error(err)
-				return new QueryResult({ code: ResponseCode.Error, error: err.message })
 			})
 	}
 }

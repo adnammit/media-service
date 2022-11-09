@@ -15,8 +15,7 @@ router
 
 // router
 // 	.route('/:id(\d+)')
-// 	.get(User.getUserById)
-// // .post(User.updateUser) // maybe idk
+// 	.post(User.updateUser) // maybe idk
 
 // router
 // 	.route('/:id/movies')
