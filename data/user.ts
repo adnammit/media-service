@@ -1,9 +1,18 @@
 import { Request, Response, NextFunction } from 'express'
-import { TypedRequestQuery } from '../models/requestTypes'
+import { TypedRequestParam, TypedRequestQuery } from '../models/requestTypes'
 import { QueryResult, ResponseCode } from '../models/queryResult'
 import { query } from './pool'
 
 export class User {
+
+	private readonly userFields = `
+		userid,
+		username,
+		email,
+		firstname,
+		lastname,
+		active
+	`
 
 	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string, email: string }>, res: Response, next: NextFunction) => {
 
@@ -11,7 +20,7 @@ export class User {
 		const username = req.query.username
 		const email = req.query.email
 
-		const sql = `select * from public.getUser(_username => $1, _userid => $2, _email => $3)`
+		const sql = `select ${this.userFields} from public.getUser(_username => $1, _userid => $2, _email => $3)`
 		const params: (string | null)[] = [
 			username ?? null,
 			id ?? null,
@@ -21,8 +30,8 @@ export class User {
 		const result = await query(sql, params)
 			.then((results) => {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
-				const user = code == ResponseCode.OK ? results.rows : null
-				return new QueryResult({ code: code, result: user })
+				const data = code == ResponseCode.OK ? results.rows : null
+				return new QueryResult({ code: code, result: data })
 			})
 
 		res.status(result.code).json(result.toResponseObj())
@@ -31,11 +40,11 @@ export class User {
 	public addUser = async (req: Request, res: Response, next: NextFunction) => {
 		const { username, email, firstname, lastname } = req.body
 		const sql = `
-			select public.addUser(
+			select ${this.userFields} from public.addUser(
 				_username => $1,
 				_email => $2,
 				_firstname => $3,
-				_lastname => $4) as userid
+				_lastname => $4)
 			`
 
 		const existingUsername = await this.getUser('_username', username)
@@ -46,8 +55,8 @@ export class User {
 			message += `${!!existingUsername.result && !!existingEmail.result
 				? 'username and email'
 				: !!existingUsername.result
-				? 'username'
-				: 'email'}`
+					? 'username'
+					: 'email'}`
 			const result = new QueryResult({ code: ResponseCode.Conflict, error: message })
 			res.status(result.code).json(result.toResponseObj())
 
@@ -55,21 +64,46 @@ export class User {
 
 			await query(sql, [username, email, firstname, lastname])
 				.then((results) => {
-					const userid = results.rows[0]?.userid
-					const result = new QueryResult({ code: ResponseCode.Created, result: { userid: userid } })
+					const result = new QueryResult({ code: ResponseCode.Created, result: results.rows[0] })
 					res.status(result.code).json(result.toResponseObj())
 				})
 		}
 	}
 
+	public updateUser = async (req: TypedRequestParam<{ id: string }, { firstname?: string, lastname?: string, active?: boolean }>, res: Response, next: NextFunction) => {
+		const id = parseInt(req.params.id)
+
+		const { firstname, lastname, active } = req.body
+		const sql = `
+			select ${this.userFields} from public.updateUser(
+				_userid => $1,
+				_firstname => $2,
+				_lastname => $3,
+				_active => $4)
+			`
+		const params: (string | boolean | number | null)[] = [
+			id,
+			firstname ?? null,
+			lastname ?? null,
+			active ?? null,
+		]
+
+		await query(sql, params)
+			.then((results) => {
+				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
+				const result = new QueryResult({ code: code, result: results.rows[0] })
+				res.status(result.code).json(result.toResponseObj())
+			})
+	}
+
 	private getUser = async (identifier: string, params: string): Promise<QueryResult> => {
-		const sql = `select * from public.getUser(${identifier} => $1)`
+		const sql = `select ${this.userFields} from public.getUser(${identifier} => $1)`
 
 		return query(sql, [params])
 			.then((results) => {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
-				const user = code == ResponseCode.OK ? results.rows[0] : null
-				return new QueryResult({ code: code, result: user })
+				const data = code == ResponseCode.OK ? results.rows[0] : null
+				return new QueryResult({ code: code, result: data })
 			})
 	}
 }

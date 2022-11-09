@@ -13,9 +13,9 @@ router
 // 	.get(User.getUserByUsername)
 // // .post(User.updateUser) // maybe idk
 
-// router
-// 	.route('/:id(\d+)')
-// 	.post(User.updateUser) // maybe idk
+router
+	.route('/:id')
+	.put(User.updateUser)
 
 // router
 // 	.route('/:id/movies')

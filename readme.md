@@ -13,7 +13,7 @@ npm run dev
 # build for production -> /dist
 npm run build
 ```
-* [then try it out!](http://localhost:5555/api/v1/users)
+* [then try it out!](http://localhost:5555/api/v1/users) [or check on prod](https://media-service.onrender.com/api/v1/users)
 
 ## Notes
 * dev hot-loading: Concurrently package is used to simultaneously watch and compile files on change and restart the server
