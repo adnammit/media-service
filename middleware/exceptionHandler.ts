@@ -17,7 +17,7 @@ const clientHandle = (err: any, req: Request, res: Response, next: NextFunction)
 
 // default
 const handle = (err: any, req: Request, res: Response, next: NextFunction) => {
-	// if you create an error page, you can render it here instead
+	// if you create a UI and error page for your api, you can render it here
 	res.status(500)
 	res.json({ error: err.stack })
 }

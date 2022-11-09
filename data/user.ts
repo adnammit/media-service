@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { TypedRequestParam, TypedRequestQuery } from '../models/requestTypes'
+import { TypedRequestBodyParam, TypedRequestQuery } from '../models/requestTypes'
 import { QueryResult, ResponseCode } from '../models/queryResult'
 import { query } from './pool'
 
@@ -16,10 +16,12 @@ export class User {
 
 	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string, email: string }>, res: Response, next: NextFunction) => {
 
-		const id = req.query.id
-		const username = req.query.username
-		const email = req.query.email
+		if (!!req.query.id && isNaN(parseInt(req.query.id))) {
+			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
+			return
+		}
 
+		const { id, username, email } = req.query
 		const sql = `select ${this.userFields} from public.getUser(_username => $1, _userid => $2, _email => $3)`
 		const params: (string | null)[] = [
 			username ?? null,
@@ -38,7 +40,14 @@ export class User {
 	}
 
 	public addUser = async (req: Request, res: Response, next: NextFunction) => {
+
 		const { username, email, firstname, lastname } = req.body
+
+		if (!username || !email || !firstname || !lastname) {
+			res.status(ResponseCode.BadRequest).json({ error: 'invalid user data' })
+			return
+		}
+
 		const sql = `
 			select ${this.userFields} from public.addUser(
 				_username => $1,
@@ -70,9 +79,14 @@ export class User {
 		}
 	}
 
-	public updateUser = async (req: TypedRequestParam<{ id: string }, { firstname?: string, lastname?: string, active?: boolean }>, res: Response, next: NextFunction) => {
-		const id = parseInt(req.params.id)
+	public updateUser = async (req: TypedRequestBodyParam<{ id: string }, { firstname?: string, lastname?: string, active?: boolean }>, res: Response, next: NextFunction) => {
 
+		if (isNaN(parseInt(req.params.id))) {
+			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
+			return
+		}
+
+		const id = req.params.id
 		const { firstname, lastname, active } = req.body
 		const sql = `
 			select ${this.userFields} from public.updateUser(
@@ -81,11 +95,12 @@ export class User {
 				_lastname => $3,
 				_active => $4)
 			`
-		const params: (string | boolean | number | null)[] = [
+
+		const params: (string | null)[] = [
 			id,
 			firstname ?? null,
 			lastname ?? null,
-			active ?? null,
+			active === null ? null : String(active),
 		]
 
 		await query(sql, params)

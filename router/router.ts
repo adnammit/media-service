@@ -1,5 +1,6 @@
 import express from 'express'
 import User from '../data/user'
+import UserMedia from '../data/userMedia'
 
 const router = express.Router()
 
@@ -8,24 +9,19 @@ router
 	.get(User.getUsers)
 	.put(User.addUser)
 
-// router
-// 	.route('/:username')
-// 	.get(User.getUserByUsername)
-// // .post(User.updateUser) // maybe idk
-
 router
 	.route('/:id')
 	.put(User.updateUser)
 
-// router
-// 	.route('/:id/movies')
-// 	.get(UserMovie.getUserMovies)
-// 	.put((req, res) => {
-// 		UserMovie.updateUserMovie(req, res)
-// 	})
-// 	.post((req, res) => {
-// 		UserMovie.addUserMovie(req, res)
-// 	})
+router
+	.route('/:id/media')
+	.get(UserMedia.getUserMedia)
+	// .put((req, res) => {
+	// 	UserMedia.updateUserMovie(req, res)
+	// })
+	// .post((req, res) => {
+	// 	UserMedia.addUserMovie(req, res)
+	// })
 
 // router
 // 	.route('/:id/movies/:movie_id')
