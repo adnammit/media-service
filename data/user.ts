@@ -5,44 +5,26 @@ import { query } from './pool'
 
 export class User {
 
-	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string }>, res: Response, next: NextFunction) => {
+	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string, email: string }>, res: Response, next: NextFunction) => {
 
 		const id = req.query.id
 		const username = req.query.username
-		let result: QueryResult
+		const email = req.query.email
 
-		if (!!id) {
+		const sql = `select * from public.getUser(_username => $1, _userid => $2, _email => $3)`
+		const params: (string | null)[] = [
+			username ?? null,
+			id ?? null,
+			email ?? null,
+		]
 
-			result = await this.getUser('_userid', id)
-			res.status(result.code).json(result.toResponseObj())
+		const result = await query(sql, params)
+			.then((results) => {
+				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
+				const user = code == ResponseCode.OK ? results.rows : null
+				return new QueryResult({ code: code, result: user })
+			})
 
-		} else if (!!username) {
-
-			result = await this.getUser('_username', username)
-			res.status(result.code).json(result.toResponseObj())
-
-		} else {
-
-			const sql = 'SELECT * FROM public.user'
-
-			result = await query(sql)
-				.then((results) => {
-					return new QueryResult({ code: ResponseCode.OK, result: results.rows })
-				})
-		}
-
-		res.status(result.code).json(result.toResponseObj())
-	}
-
-	public getUserById = async (req: TypedRequestQuery<{ id: string }>, res: Response, next: NextFunction) => {
-		const id = req.query.id
-		const result = await this.getUser('_userid', id)
-		res.status(result.code).json(result.toResponseObj())
-	}
-
-	public getUserByUsername = async (req: TypedRequestQuery<{ username: string }>, res: Response, next: NextFunction) => {
-		const username = req.query.username
-		const result = await this.getUser('_username', username)
 		res.status(result.code).json(result.toResponseObj())
 	}
 
@@ -56,10 +38,17 @@ export class User {
 				_lastname => $4) as userid
 			`
 
-		const existingUser = await this.getUser('_username', username)
+		const existingUsername = await this.getUser('_username', username)
+		const existingEmail = await this.getUser('_email', email)
 
-		if (!!existingUser.result) {
-			const result = new QueryResult({ code: ResponseCode.Conflict, error: 'username already exists' })
+		if (!!existingUsername.result || !!existingEmail.result) {
+			let message = `User already exists with `
+			message += `${!!existingUsername.result && !!existingEmail.result
+				? 'username and email'
+				: !!existingUsername.result
+				? 'username'
+				: 'email'}`
+			const result = new QueryResult({ code: ResponseCode.Conflict, error: message })
 			res.status(result.code).json(result.toResponseObj())
 
 		} else {
