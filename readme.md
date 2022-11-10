@@ -47,10 +47,8 @@ DB_DATABASE=
 * db errors still crash the server -- add handling (test by removing a param that's expected in args)
 * make a user request obj with validation like in title.ts
 * absolute paths in express is different...
-* wire up each proc to and endpoint and test
 * add validation/param standardization
 * add auth
-* write a postman collection
 * check out [express middlewares](https://blog.bitsrc.io/5-express-middleware-libraries-every-developer-should-know-94e2728f7503)
 * upgrade to Express5 from beta when that comes out
 * check [this](https://javascript.plainenglish.io/how-to-automatically-convert-typescript-types-to-runtime-validators-5b06ee269b13) out
@@ -58,3 +56,5 @@ DB_DATABASE=
 
 ## Done
 * add exception handling and return meaningful json errors
+* wire up each proc to and endpoint and test
+* write a postman collection
