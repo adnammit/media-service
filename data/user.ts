@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { TypedRequestBodyParam, TypedRequestQuery } from '../models/requestTypes'
-import { QueryResult, ResponseCode } from '../models/queryResult'
+import { ResponseCode } from '../models/response-code'
+import { TypedRequestBodyParam, TypedRequestQuery } from '../models/typed-request'
+import { QueryResult } from '../models/query-result'
 import UtilFuncs from '../helpers/utils'
 import { Query } from './pool'
 

@@ -1,10 +1,5 @@
 import UtilFuncs from '../helpers/utils'
 
-export enum MediaType {
-	Movie = 'movie',
-	TV = 'tv'
-}
-
 export type ITitleInput = {
 	movieDbId?: string,
 	imdbId?: string,
@@ -14,9 +9,6 @@ export type ITitleInput = {
 	favorite?: string,
 	queued?: string
 }
-
-
-// select media.addUserTitle(1, 280, 'tt0103064', 'movie', 3, true, false, true);
 
 export class AddTitleQuery {
 	userId: string

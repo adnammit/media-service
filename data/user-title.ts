@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express'
-import { TypedRequestBodyParam, TypedRequestParam } from '../models/requestTypes'
-import { QueryResult, ResponseCode } from '../models/queryResult'
+import { ResponseCode } from '../models/response-code'
+import { TypedRequestBodyParam, TypedRequestParam } from '../models/typed-request'
+import { QueryResult } from '../models/query-result'
 import { AddTitleQuery, ITitleInput } from '../models/title'
 import UtilFuncs from '../helpers/utils'
 import { Query } from './pool'
@@ -69,21 +70,12 @@ export class UserTitle {
 		const userId = req.params.id
 		const titleId = req.params.titleId
 
-		// console.log('>> ' + userId);
-		// console.log('>> ' + titleId);
-		// console.log('' + JSON.stringify(req.params));
-		// console.log(!UtilFuncs.StringIsInt(userId));
-		// console.log(!UtilFuncs.StringIsInt(titleId));
-
-
 		if (!UtilFuncs.StringIsInt(userId) || !UtilFuncs.StringIsInt(titleId)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'userid and titleid required' })
 			return
 		}
 
 		const existingTitle = await this.getUserTitle({ userId: userId, titleId: titleId })
-
-		console.log('>> ' + JSON.stringify(existingTitle.result));
 
 		// if the title doesn't exist (or is already deleted) return NoContent
 		if (!!existingTitle.result) {

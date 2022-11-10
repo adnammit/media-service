@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import api from './api/api'
 import dotenv from 'dotenv'
-import { log, clientHandle, handle } from './middleware/exceptionHandler'
+import { log, clientHandle, handle } from './middleware/exception-handler'
 
 dotenv.config()
 

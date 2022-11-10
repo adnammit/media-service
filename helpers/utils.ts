@@ -1,4 +1,4 @@
-import { MediaType } from '../models/title';
+import { MediaType } from '../models/media-type';
 
 export class UtilFuncs {
 
