@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { TypedRequestBodyParam, TypedRequestQuery } from '../models/requestTypes'
 import { QueryResult, ResponseCode } from '../models/queryResult'
-import { query } from './pool'
+import UtilFuncs from '../helpers/utils'
+import { Query } from './pool'
 
 export class User {
 
@@ -16,12 +17,13 @@ export class User {
 
 	public getUsers = async (req: TypedRequestQuery<{ id: string, username: string, email: string }>, res: Response, next: NextFunction) => {
 
-		if (!!req.query.id && isNaN(parseInt(req.query.id))) {
+		const { id, username, email } = req.query
+
+		if (!!id && !UtilFuncs.StringIsInt(id)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
 			return
 		}
 
-		const { id, username, email } = req.query
 		const sql = `select ${this.userFields} from public.getUser(_username => $1, _userid => $2, _email => $3)`
 		const params: (string | null)[] = [
 			username ?? null,
@@ -29,10 +31,10 @@ export class User {
 			email ?? null,
 		]
 
-		const result = await query(sql, params)
+		const result = await Query(sql, params)
 			.then((results) => {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
-				const data = code == ResponseCode.OK ? results.rows : null
+				const data = code == ResponseCode.OK ? results.rows : []
 				return new QueryResult({ code: code, result: data })
 			})
 
@@ -71,7 +73,7 @@ export class User {
 
 		} else {
 
-			await query(sql, [username, email, firstname, lastname])
+			await Query(sql, [username, email, firstname, lastname])
 				.then((results) => {
 					const result = new QueryResult({ code: ResponseCode.Created, result: results.rows[0] })
 					res.status(result.code).json(result.toResponseObj())
@@ -81,12 +83,13 @@ export class User {
 
 	public updateUser = async (req: TypedRequestBodyParam<{ id: string }, { firstname?: string, lastname?: string, active?: boolean }>, res: Response, next: NextFunction) => {
 
-		if (isNaN(parseInt(req.params.id))) {
+		const id = req.params.id
+
+		if (!UtilFuncs.StringIsInt(id)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
 			return
 		}
 
-		const id = req.params.id
 		const { firstname, lastname, active } = req.body
 		const sql = `
 			select ${this.userFields} from public.updateUser(
@@ -103,7 +106,7 @@ export class User {
 			active === null ? null : String(active),
 		]
 
-		await query(sql, params)
+		await Query(sql, params)
 			.then((results) => {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
 				const result = new QueryResult({ code: code, result: results.rows[0] })
@@ -114,7 +117,7 @@ export class User {
 	private getUser = async (identifier: string, params: string): Promise<QueryResult> => {
 		const sql = `select ${this.userFields} from public.getUser(${identifier} => $1)`
 
-		return query(sql, [params])
+		return Query(sql, [params])
 			.then((results) => {
 				const code = results.rows.length == 0 ? ResponseCode.NotFound : ResponseCode.OK
 				const data = code == ResponseCode.OK ? results.rows[0] : null

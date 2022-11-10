@@ -15,6 +15,9 @@ npm run dev
 
 # build for production -> /dist
 npm run build
+
+# run service
+npm run start
 ```
 
 ## Notes
@@ -41,6 +44,8 @@ DB_DATABASE=
 ```
 
 ## To-do
+* db errors still crash the server -- add handling (test by removing a param that's expected in args)
+* make a user request obj with validation like in title.ts
 * absolute paths in express is different...
 * wire up each proc to and endpoint and test
 * add validation/param standardization

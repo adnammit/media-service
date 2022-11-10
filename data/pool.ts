@@ -19,7 +19,7 @@ pool.on('error', (err, client) => {
 
 // wrapper for pool.query to get some diagnostic data if needed
 // more diagnostic ideas: https://node-postgres.com/guides/project-structure
-export const query = async (text: string, params: any[] | undefined = undefined) => {
+export const Query = async (text: string, params: any[] | undefined = undefined) => {
 	const start = Date.now()
 	const res = await pool.query(text, params)
 	const duration = Date.now() - start

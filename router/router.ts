@@ -1,6 +1,6 @@
 import express from 'express'
 import User from '../data/user'
-import UserMedia from '../data/userMedia'
+import UserTitle from '../data/userTitle'
 
 const router = express.Router()
 
@@ -14,8 +14,13 @@ router
 	.put(User.updateUser)
 
 router
-	.route('/:id/media')
-	.get(UserMedia.getUserMedia)
+	.route('/:id/title')
+	.get(UserTitle.getUserTitles)
+	.put(UserTitle.addOrUpdateUserTitle)
+
+router
+	.route('/:id/title/:titleId')
+	.delete(UserTitle.deleteUserTitle)
 	// .put((req, res) => {
 	// 	UserMedia.updateUserMovie(req, res)
 	// })
