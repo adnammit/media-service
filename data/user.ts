@@ -46,7 +46,7 @@ export class User {
 
 		const { username, email, firstname, lastname } = req.body
 
-		if (!username || !email || !firstname || !lastname) {
+		if (!username || !email) { // || !firstname || !lastname) { // only username and email required for now
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid user data' })
 			return
 		}
