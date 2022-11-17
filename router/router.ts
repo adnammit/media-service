@@ -14,12 +14,12 @@ router
 	.put(User.updateUser)
 
 router
-	.route('/:id/title')
+	.route('/:id/titles')
 	.get(UserTitle.getUserTitles)
 	.put(UserTitle.addOrUpdateUserTitle)
 
 router
-	.route('/:id/title/:titleId')
+	.route('/:id/titles/:titleId')
 	.delete(UserTitle.deleteUserTitle)
 
 export default router
