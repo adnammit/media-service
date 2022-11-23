@@ -35,6 +35,26 @@ export class UpdateTitleQuery {
 			errors.push(`${this.errorPrefix} titleId`)
 		}
 
+		// if (!UtilFuncs.StringIsPositiveInt(this.input.rating) || this.input.rating > 5) {
+		// 	isValid = false
+		// 	errors.push(`${this.errorPrefix} rating`)
+		// }
+
+		if (!!this.input.watched && !UtilFuncs.IsBoolean(this.input.watched)) {
+			isValid = false
+			errors.push(`${this.errorPrefix} watched`)
+		}
+
+		if (!!this.input.favorite && !UtilFuncs.IsBoolean(this.input.favorite)) {
+			isValid = false
+			errors.push(`${this.errorPrefix} favorite`)
+		}
+
+		if (!!this.input.queued && !UtilFuncs.IsBoolean(this.input.queued)) {
+			isValid = false
+			errors.push(`${this.errorPrefix} queued`)
+		}
+
 		return { isValid: isValid, errors: errors }
 	}
 
