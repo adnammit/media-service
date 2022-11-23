@@ -58,7 +58,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"username\": \"hungry\",\r\n    \"email\": \"food@test.com\",\r\n    \"firstname\": \"foo\",\r\n    \"lastname\": \"bar\"\r\n}"
+					"raw": "{\r\n\t\"username\": \"hungry\",\r\n    \"email\": \"food@test.com\",\r\n    \"firstname\": null, // can be null\r\n    \"lastname\": \"bar\" // can be null\r\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}users",
@@ -108,13 +108,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}users/1/title",
+					"raw": "{{base_url}}users/1/titles",
 					"host": [
 						"{{base_url}}users"
 					],
 					"path": [
 						"1",
-						"title"
+						"titles"
 					]
 				}
 			},
@@ -139,13 +139,45 @@
 					"raw": "{\r\n    \"movieDbId\": \"115004\",\r\n    \"imdbId\": \"tt10155688\",\r\n    \"mediaType\": \"tv\",\r\n    \"rating\": 5,\r\n    \"watched\": true,\r\n    \"favorite\": true,\r\n    \"queued\": null\r\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}users/1/title",
+					"raw": "{{base_url}}users/1/titles",
 					"host": [
 						"{{base_url}}users"
 					],
 					"path": [
 						"1",
-						"title"
+						"titles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUserTitle",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 4,\r\n    \"watched\": true,\r\n    \"favorite\": false,\r\n    \"queued\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}users/1/titles/1",
+					"host": [
+						"{{base_url}}users"
+					],
+					"path": [
+						"1",
+						"titles",
+						"1"
 					]
 				}
 			},
@@ -166,13 +198,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}users/1/title/3",
+					"raw": "{{base_url}}users/1/titles/3",
 					"host": [
 						"{{base_url}}users"
 					],
 					"path": [
 						"1",
-						"title",
+						"titles",
 						"3"
 					]
 				}

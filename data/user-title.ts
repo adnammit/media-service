@@ -2,7 +2,8 @@ import { Response, NextFunction } from 'express'
 import { ResponseCode } from '../models/response-code'
 import { TypedRequestBodyParam, TypedRequestParam } from '../models/typed-request'
 import { QueryResult } from '../models/query-result'
-import { AddTitleQuery, ITitleInput } from '../models/title'
+import { AddTitleQuery, IAddTitleInput } from '../models/add-title-query'
+import { UpdateTitleQuery, IUpdateTitleInput } from '../models/update-title-query'
 import UtilFuncs from '../helpers/utils'
 import { Query } from './pool'
 
@@ -24,7 +25,7 @@ export class UserTitle {
 
 		const id = req.params.id
 
-		if (!UtilFuncs.StringIsInt(id)) {
+		if (!UtilFuncs.StringIsPositiveInt(id)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
 			return
 		}
@@ -38,7 +39,7 @@ export class UserTitle {
 			})
 	}
 
-	public addOrUpdateUserTitle = async (req: TypedRequestBodyParam<{ id: string }, ITitleInput>, res: Response, next: NextFunction) => {
+	public addUserTitle = async (req: TypedRequestBodyParam<{ id: string }, IAddTitleInput>, res: Response, next: NextFunction) => {
 
 		const userId = req.params.id
 		const request: AddTitleQuery = new AddTitleQuery(userId, req.body)
@@ -65,12 +66,42 @@ export class UserTitle {
 			})
 	}
 
+	public updateUserTitle = async (req: TypedRequestBodyParam<{ id: string, titleId: string }, IUpdateTitleInput>, res: Response, next: NextFunction) => {
+
+		const userId = req.params.id
+		const titleId = req.params.titleId
+
+		const request: UpdateTitleQuery = new UpdateTitleQuery(userId, titleId, req.body)
+		const validation = request.Validate()
+
+		if (!validation.isValid) {
+			res.status(ResponseCode.BadRequest).json({ error: validation.errors })
+			return
+		}
+
+		const sql = `select ${this.userMediaFields} from media.updateUserTitle(
+			${request.getQueryArguments()}
+		)`
+
+		await Query(sql, request.getQueryParams())
+			.then((results) => {
+				let result: QueryResult
+				if (results.rows.length > 0) {
+					result = new QueryResult({ code: ResponseCode.OK, result: results.rows[0] })
+				} else {
+					result = new QueryResult({ code: ResponseCode.NotFound, error: "Could not find title to update" })
+				}
+				// const result = new QueryResult({ code: code, result: data })
+				res.status(result.code).json(result.toResponseObj())
+			})
+	}
+
 	public deleteUserTitle = async (req: TypedRequestParam<{ id: string, titleId: string }>, res: Response, next: NextFunction) => {
 
 		const userId = req.params.id
 		const titleId = req.params.titleId
 
-		if (!UtilFuncs.StringIsInt(userId) || !UtilFuncs.StringIsInt(titleId)) {
+		if (!UtilFuncs.StringIsPositiveInt(userId) || !UtilFuncs.StringIsPositiveInt(titleId)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'userid and titleid required' })
 			return
 		}

@@ -20,7 +20,7 @@ export class User {
 
 		const { id, username, email } = req.query
 
-		if (!!id && !UtilFuncs.StringIsInt(id)) {
+		if (!!id && !UtilFuncs.StringIsPositiveInt(id)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
 			return
 		}
@@ -86,7 +86,7 @@ export class User {
 
 		const id = req.params.id
 
-		if (!UtilFuncs.StringIsInt(id)) {
+		if (!UtilFuncs.StringIsPositiveInt(id)) {
 			res.status(ResponseCode.BadRequest).json({ error: 'invalid userid' })
 			return
 		}

@@ -1,6 +1,6 @@
 import UtilFuncs from '../helpers/utils'
 
-export type ITitleInput = {
+export type IAddTitleInput = {
 	movieDbId?: string,
 	imdbId?: string,
 	mediaType?: string,
@@ -12,11 +12,11 @@ export type ITitleInput = {
 
 export class AddTitleQuery {
 	userId: string
-	input: ITitleInput
+	input: IAddTitleInput
 
-	private readonly errorPrefix = 'AddMedia input requires valid'
+	private readonly errorPrefix = 'Add title input requires valid'
 
-	constructor(userid: string, input: ITitleInput) {
+	constructor(userid: string, input: IAddTitleInput) {
 		this.userId = userid
 		this.input = input
 	}
@@ -26,7 +26,7 @@ export class AddTitleQuery {
 		let isValid = true
 		const errors: string[] = []
 
-		if (!UtilFuncs.StringIsInt(this.userId)) {
+		if (!UtilFuncs.StringIsPositiveInt(this.userId)) {
 			isValid = false
 			errors.push(`${this.errorPrefix} userId`)
 		}
