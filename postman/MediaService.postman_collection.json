@@ -167,7 +167,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"rating\": 4,\r\n    \"watched\": true,\r\n    \"favorite\": false,\r\n    \"queued\": false\r\n}"
+					"raw": "{\r\n    \"rating\": 2,\r\n    \"watched\": false,\r\n    \"favorite\": false,\r\n    \"queued\": null\r\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}users/1/titles/1",
@@ -206,6 +206,182 @@
 						"1",
 						"titles",
 						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserLists",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}users/1/lists",
+					"host": [
+						"{{base_url}}users"
+					],
+					"path": [
+						"1",
+						"lists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddUserList",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Halloween Movies\",\r\n    \"description\": \"Movies for the spooky season\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}users/1/lists",
+					"host": [
+						"{{base_url}}users"
+					],
+					"path": [
+						"1",
+						"lists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUserList",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": null,\r\n    \"description\": null\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}lists/2",
+					"host": [
+						"{{base_url}}lists"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUserList",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}lists/1",
+					"host": [
+						"{{base_url}}lists"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddUserListItem",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}lists/3/titles/4",
+					"host": [
+						"{{base_url}}lists"
+					],
+					"path": [
+						"3",
+						"titles",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUserListItem",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}lists/3/titles/4",
+					"host": [
+						"{{base_url}}lists"
+					],
+					"path": [
+						"3",
+						"titles",
+						"4"
 					]
 				}
 			},

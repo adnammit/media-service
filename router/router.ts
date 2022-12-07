@@ -1,27 +1,43 @@
 import express from 'express'
 import User from '../data/user'
 import UserTitle from '../data/user-title'
+import UserList from '../data/user-list'
 
 const router = express.Router()
 
 router
-	.route('/')
+	.route('/users/')
 	.get(User.getUsers)
 	.put(User.addUser)
 
 router
-	.route('/:id')
+	.route('/users/:id')
 	.put(User.updateUser)
 
 router
-	.route('/:id/titles')
+	.route('/users/:id/titles')
 	.get(UserTitle.getUserTitles)
 	.put(UserTitle.addUserTitle)
 
 router
-	.route('/:id/titles/:titleId')
+	.route('/users/:id/titles/:titleId')
 	.put(UserTitle.updateUserTitle)
 	.delete(UserTitle.deleteUserTitle)
+
+router
+	.route('/users/:id/lists')
+	.get(UserList.getUserLists)
+	.put(UserList.addUserList)
+
+router
+	.route('/lists/:id')
+	.put(UserList.updateUserList)
+	.delete(UserList.deleteUserList)
+
+router
+	.route('/lists/:id/titles/:titleId')
+	.put(UserList.addUserListItem)
+	.delete(UserList.deleteUserListItem)
 
 export default router
 

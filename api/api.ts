@@ -8,6 +8,6 @@ const api: Express = express()
 api.use(bodyParser.json())
 	.use(bodyParser.urlencoded({ extended: true }))
 	.use(cors())
-	.use('/users', router)
+	.use('/', router)
 
 export default api
