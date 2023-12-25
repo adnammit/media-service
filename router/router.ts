@@ -6,6 +6,10 @@ import UserList from '../data/user-list'
 const router = express.Router()
 
 router
+	.route('/hello/')
+	.get((req, res) => { res.send('Hello World! 👋🏻') });
+
+router
 	.route('/users/')
 	.get(User.getUsers)
 	.put(User.addUser)

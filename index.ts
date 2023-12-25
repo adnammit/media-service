@@ -15,8 +15,6 @@ app.use('/api/v1', api)
 
 app.listen(port, () => {
 	if (process.env.NODE_ENV !== 'production') {
-		console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
+		console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
 	}
 })
-
-
